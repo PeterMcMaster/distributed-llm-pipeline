@@ -1,0 +1,25 @@
+# Train (baseline run)
+torchrun --nproc_per_node=4 fsdp_train-2.py --config sample_config-4.txt
+
+# Resume (validates sharded checkpoint load + trainer state restore)
+torchrun --nproc_per_node=4 fsdp_train-2.py \
+  --config sample_config-4.txt \
+  --resume_from_checkpoint ./runs/llama32_1b_fsdp/checkpoints/step_00000010
+
+# Export (validates FSDP unsharding + HF artifact save)
+torchrun --nproc_per_node=4 fsdp_export.py \
+  --config sample_config-4.txt \
+  --checkpoint_dir ./runs/llama32_1b_fsdp/checkpoints/step_00000010 \
+  --export_dir ./runs/llama32_1b_export
+
+# Tiny smoke-test training run (very short end-to-end check)
+# If CLI overrides are not supported for these fields in your script, edit
+# sample_config-4.txt instead: set max_steps=2, max_train_samples=8,
+# build_tokenized_val_dataset=false.
+torchrun --nproc_per_node=4 fsdp_train-2.py --config sample_config-4.txt
+
+# Transformers reload validation (verifies AutoModel/AutoTokenizer can load export)
+python -c "from transformers import AutoModelForCausalLM, AutoTokenizer; p='./runs/llama32_1b_export'; AutoModelForCausalLM.from_pretrained(p); AutoTokenizer.from_pretrained(p); print('transformers reload ok')"
+
+# vLLM validation (verifies vLLM can serve exported checkpoint)
+vllm serve ./runs/llama32_1b_export --load-format safetensors

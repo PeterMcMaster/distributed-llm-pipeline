@@ -1,0 +1,19 @@
+{
+  "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+  "dataset_name": "databricks/databricks-dolly-15k",
+  "train_samples": 4000,
+  "val_samples": 500,
+  "max_length": 512,
+  "wall_clock_sec": 939.9720461368561,
+  "peak_gpu_mem_gb": 4.672480583190918,
+  "export_time_sec": 1.528592824935913,
+  "export_size_gb": 0.9308796254917979,
+  "train_metrics": {
+    "train_runtime": 939.799,
+    "train_samples_per_second": 4.256,
+    "train_steps_per_second": 0.532,
+    "total_flos": 1373910009288960.0,
+    "train_loss": 2.162825439453125
+  },
+  "export_dir": "./ddp_baseline_output/final_hf_export"
+}

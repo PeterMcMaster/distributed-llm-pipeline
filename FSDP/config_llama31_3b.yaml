@@ -1,0 +1,61 @@
+# Full training config for Llama-3.1-3B on UltraChat200K
+model_name_or_path: "meta-llama/Llama-3.1-3B"
+trust_remote_code: false
+dataset_name: "HuggingFaceH4/ultrachat_200k"
+train_split: "train_sft"
+val_split: "test_sft"
+output_dir: "./runs/llama31_3b_fsdp"
+max_seq_length: 2048
+
+epochs: 1
+max_steps: -1
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 2.0e-5
+weight_decay: 0.1
+betas: [0.9, 0.95]
+eps: 1.0e-8
+warmup_ratio: 0.03
+max_grad_norm: 1.0
+
+num_preprocessing_workers: 4
+dataloader_num_workers: 4
+pin_memory: true
+persistent_workers: true
+
+log_every_n_steps: 50
+eval_every_n_steps: 500
+save_every_n_steps: 500
+seed: 42
+
+sharding_strategy: "FULL_SHARD"
+use_orig_params: true
+limit_all_gathers: true
+forward_prefetch: false
+sync_module_states: true
+cpu_offload: false
+auto_wrap_policy: "transformer_based"
+min_num_params: 1000000
+activation_checkpointing: true
+
+prefer_bf16: true
+param_dtype: "bf16"
+reduce_dtype: "bf16"
+buffer_dtype: "bf16"
+allow_tf32: true
+
+save_optimizer: true
+save_rng_state: true
+
+validation_text: "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n - 1) + fibonacci(n - 2)\n"
+
+use_wandb: false
+wandb_project: "fsdp-llama"
+wandb_run_name: null
+
+use_fast_tokenizer: true
+attn_implementation: "sdpa"
+use_cache: false
+build_tokenized_val_dataset: true
+max_train_samples: null

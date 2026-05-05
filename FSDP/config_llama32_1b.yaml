@@ -1,5 +1,5 @@
 # Full training config for Llama-3.1-1B on UltraChat200K
-model_name_or_path: "meta-llama/Llama-3.1-1B"
+model_name_or_path: "meta-llama/Llama-3.2-1B"
 trust_remote_code: false
 dataset_name: "HuggingFaceH4/ultrachat_200k"
 train_split: "train_sft"

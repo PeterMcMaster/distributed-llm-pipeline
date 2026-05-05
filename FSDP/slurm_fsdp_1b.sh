@@ -34,6 +34,6 @@ fi
 
 # Run FSDP training with 4 GPUs
 echo "Starting FSDP Llama-3.1-1B training..."
-torchrun --nproc_per_node=4 fsdp_train-2.py --config config_llama31_1b.yaml
+torchrun --nproc_per_node=4 fsdp_train-2.py --config config_llama32_1b.yaml
 
 echo "Training complete!"

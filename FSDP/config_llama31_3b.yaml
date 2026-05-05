@@ -50,9 +50,9 @@ save_rng_state: true
 
 validation_text: "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n - 1) + fibonacci(n - 2)\n"
 
-use_wandb: false
+use_wandb: true
 wandb_project: "fsdp-llama"
-wandb_run_name: null
+wandb_run_name: "llama31_3b_ultrachat"
 
 use_fast_tokenizer: true
 attn_implementation: "sdpa"

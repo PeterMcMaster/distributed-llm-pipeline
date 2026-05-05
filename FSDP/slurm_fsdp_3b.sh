@@ -10,8 +10,7 @@
 
 # Load required modules
 module purge
-module load cuda/12.1
-module load python/3.11
+module load cuda/12.3
 
 # Create logs directory if it doesn't exist
 mkdir -p logs

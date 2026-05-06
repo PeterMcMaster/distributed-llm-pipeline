@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=fsdp_llama32_1b
 #SBATCH --account=edu
-#SBATCH --gres=gpu:4
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=120G
+#SBATCH --gres=gpu:2
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=60G
 #SBATCH --time=24:00:00
 #SBATCH --output=logs/fsdp_1b_%j.log
 #SBATCH --error=logs/fsdp_1b_%j.err
@@ -34,6 +34,6 @@ fi
 
 # Run FSDP training with 4 GPUs
 echo "Starting FSDP Llama-3.1-1B training..."
-torchrun --nproc_per_node=4 fsdp_train-2.py --config config_llama32_1b.yaml
+torchrun --nproc_per_node=2 fsdp_train-2.py --config config_llama32_1b.yaml
 
 echo "Training complete!"

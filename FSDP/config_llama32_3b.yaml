@@ -7,7 +7,7 @@ val_split: "test_sft"
 output_dir: "./runs/llama31_3b_fsdp"
 max_seq_length: 2048
 
-epochs: 1
+epochs: 0.5
 max_steps: -1
 per_device_train_batch_size: 1
 per_device_eval_batch_size: 1

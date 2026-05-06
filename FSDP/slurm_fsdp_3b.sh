@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=fsdp_llama32_3b
 #SBATCH --account=edu
-#SBATCH --gres=gpu:2
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=60G
+#SBATCH --gres=gpu:4
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=120G
 #SBATCH --time=12:00:00
 #SBATCH --output=logs/fsdp_3b_%j.log
 #SBATCH --error=logs/fsdp_3b_%j.err

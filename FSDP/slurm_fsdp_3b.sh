@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:2
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=60G
-#SBATCH --time=36:00:00
+#SBATCH --time=12:00:00
 #SBATCH --output=logs/fsdp_3b_%j.log
 #SBATCH --error=logs/fsdp_3b_%j.err
 

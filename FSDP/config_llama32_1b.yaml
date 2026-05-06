@@ -1,4 +1,4 @@
-# Full training config for Llama-3.1-1B on UltraChat200K
+# Full training config for Llama-3.2-1B on UltraChat200K
 model_name_or_path: "meta-llama/Llama-3.2-1B"
 trust_remote_code: false
 dataset_name: "HuggingFaceH4/ultrachat_200k"
@@ -33,7 +33,7 @@ sharding_strategy: "FULL_SHARD"
 use_orig_params: true
 limit_all_gathers: true
 forward_prefetch: false
-sync_module_states: true
+sync_module_states: false
 cpu_offload: false
 auto_wrap_policy: "transformer_based"
 min_num_params: 1000000
@@ -52,7 +52,7 @@ validation_text: "def fibonacci(n):\n    if n <= 1:\n        return n\n    retur
 
 use_wandb: true
 wandb_project: "fsdp-llama"
-wandb_run_name: "llama31_1b_ultrachat"
+wandb_run_name: "llama31_1b_ultrachat_4a6000"
 
 use_fast_tokenizer: true
 attn_implementation: "sdpa"

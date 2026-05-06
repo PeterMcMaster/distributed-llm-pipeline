@@ -7,8 +7,8 @@ val_split: "test_sft"
 output_dir: "./runs/llama31_3b_fsdp"
 max_seq_length: 2048
 
-epochs: 0.5
-max_steps: -1
+epochs: 1
+max_steps: 12992
 per_device_train_batch_size: 1
 per_device_eval_batch_size: 1
 gradient_accumulation_steps: 8
@@ -33,7 +33,7 @@ sharding_strategy: "FULL_SHARD"
 use_orig_params: true
 limit_all_gathers: true
 forward_prefetch: false
-sync_module_states: true
+sync_module_states: false
 cpu_offload: false
 auto_wrap_policy: "transformer_based"
 min_num_params: 1000000
@@ -52,7 +52,7 @@ validation_text: "def fibonacci(n):\n    if n <= 1:\n        return n\n    retur
 
 use_wandb: true
 wandb_project: "fsdp-llama"
-wandb_run_name: "llama31_3b_ultrachat"
+wandb_run_name: "llama31_3b_ultrachat_4a6000"
 
 use_fast_tokenizer: true
 attn_implementation: "sdpa"

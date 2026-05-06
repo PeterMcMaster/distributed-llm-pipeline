@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=fsdp_llama31_1b
+#SBATCH --job-name=fsdp_llama32_1b
+#SBATCH --account=edu
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=16

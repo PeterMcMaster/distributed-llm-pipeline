@@ -32,8 +32,7 @@ seed: 42
 sharding_strategy: "FULL_SHARD"
 use_orig_params: true
 
-auto_wrap_policy: "size_based"
-min_num_params: 300000000   
+auto_wrap_policy: "transformer_based"
 
 limit_all_gathers: false
 forward_prefetch: false

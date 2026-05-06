@@ -34,11 +34,11 @@ use_orig_params: true
 
 auto_wrap_policy: "transformer_based"
 
-limit_all_gathers: false
-forward_prefetch: false
-sync_module_states: false
+limit_all_gathers: true
+forward_prefetch: true
+sync_module_states: true
 cpu_offload: false
-activation_checkpointing: false   
+activation_checkpointing: false
 
 prefer_bf16: true
 param_dtype: "bf16"

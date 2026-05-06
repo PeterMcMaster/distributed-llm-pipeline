@@ -33,7 +33,7 @@ sharding_strategy: "FULL_SHARD"
 use_orig_params: true
 
 auto_wrap_policy: "size_based"
-min_num_params: 50000000
+min_num_params: 300000000
 
 limit_all_gathers: false
 forward_prefetch: false

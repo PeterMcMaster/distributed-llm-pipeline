@@ -8,7 +8,7 @@ output_dir: "./runs/llama31_3b_fsdp"
 max_seq_length: 2048
 
 epochs: 1
-max_steps: 12992
+max_steps: 3247
 per_device_train_batch_size: 1
 per_device_eval_batch_size: 1
 gradient_accumulation_steps: 8
@@ -20,7 +20,7 @@ warmup_ratio: 0.03
 max_grad_norm: 1.0
 
 num_preprocessing_workers: 4
-dataloader_num_workers: 4
+dataloader_num_workers: 16
 pin_memory: true
 persistent_workers: true
 
@@ -32,7 +32,7 @@ seed: 42
 sharding_strategy: "FULL_SHARD"
 use_orig_params: true
 limit_all_gathers: true
-forward_prefetch: false
+forward_prefetch: true
 sync_module_states: false
 cpu_offload: false
 auto_wrap_policy: "transformer_based"
@@ -57,5 +57,5 @@ wandb_run_name: "llama31_3b_ultrachat_4a6000"
 use_fast_tokenizer: true
 attn_implementation: "sdpa"
 use_cache: false
-build_tokenized_val_dataset: true
+build_tokenized_val_dataset: false
 max_train_samples: null

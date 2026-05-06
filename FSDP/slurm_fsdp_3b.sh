@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=fsdp_llama32_3b
 #SBATCH --account=edu
-#SBATCH --gres=gpu:4
+#SBATCH --partition=burst
+#SBATCH --gres=gpu:a6000:4
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=120G
 #SBATCH --time=12:00:00

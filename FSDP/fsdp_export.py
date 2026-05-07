@@ -333,12 +333,9 @@ def load_checkpoint(checkpoint_dir: str, model: FSDP) -> None:
     ckpt_dir = Path(checkpoint_dir)
     if not ckpt_dir.exists():
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_dir}")
-
-    # Use FSDP's state_dict context to load in sharded format
-    with FSDP.state_dict_type(model, StateDictType.SHARDED_STATE_DICT):
-        state_dict = model.state_dict()
-        dcp.load(state_dict={"model": state_dict}, checkpoint_id=str(ckpt_dir))
-        model.load_state_dict(state_dict)
+    
+    state = {"app": AppState(model, None)}
+    dcp.load(state_dict=state, checkpoint_id=str(ckpt_dir))
 
 
 def export_dtype_to_torch(dtype_name: str) -> torch.dtype:

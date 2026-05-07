@@ -74,5 +74,31 @@
       "peak_cpu_ram_mb": null,
       "extra_scripts_required": "FSDP checkpoint exported to Hugging Face format before vLLM serving"
     }
+  },
+  {
+    "experiment_name": "zero2-llama32-1b-vllm-export",
+    "strategy": "ZeRO-2",
+    "model_size": "1B",
+    "model_id": "robsol/hpml-final-1b-zero2-vllm-export",
+    "revision": "29a14e78c42ff0bae979abb3a1949e1c55d9bc02",
+    "tokenizer_revision": "29a14e78c42ff0bae979abb3a1949e1c55d9bc02",
+    "checkpoint_format": "huggingface",
+    "result_group": "ZeRO2",
+    "port": 8013,
+    "dtype": "float16",
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.85,
+    "chat_template": "templates/llama3-chat-template.jinja",
+    "training_metrics": {
+      "tokens_per_second": null,
+      "wall_clock_time_to_fixed_validation_loss_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "validation_loss_target": null
+    },
+    "export_metrics": {
+      "conversion_time_seconds": null,
+      "peak_cpu_ram_mb": null,
+      "extra_scripts_required": "DeepSpeed ZeRO-2 checkpoint exported to Hugging Face format before vLLM serving"
+    }
   }
 ]

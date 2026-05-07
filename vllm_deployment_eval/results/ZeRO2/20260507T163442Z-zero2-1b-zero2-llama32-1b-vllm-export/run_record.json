@@ -1,0 +1,22 @@
+{
+  "run_id": "20260507T163442Z-zero2-1b-zero2-llama32-1b-vllm-export",
+  "experiment_name": "zero2-llama32-1b-vllm-export",
+  "strategy": "ZeRO-2",
+  "model_size": "1B",
+  "model_id": "robsol/hpml-final-1b-zero2-vllm-export",
+  "checkpoint_format": "huggingface",
+  "server_load_time_seconds": 82.0287,
+  "avg_latency_seconds": 1.6276,
+  "avg_first_token_latency_seconds": 0.0205,
+  "avg_completion_tokens_per_second": 80.5498,
+  "run_dir": "/home/petermcmaster/vllm-deployment-eval/results/ZeRO2/20260507T163442Z-zero2-1b-zero2-llama32-1b-vllm-export",
+  "training_tokens_per_second": null,
+  "training_wall_clock_time_to_fixed_validation_loss_seconds": null,
+  "training_peak_gpu_memory_mb": null,
+  "export_conversion_time_seconds": null,
+  "export_peak_cpu_ram_mb": null,
+  "export_extra_scripts_required": "DeepSpeed ZeRO-2 checkpoint exported to Hugging Face format before vLLM serving",
+  "peak_gpu_memory_used_mb": 19482.0,
+  "peak_power_w": 72.72,
+  "peak_gpu_utilization_pct": 100.0
+}

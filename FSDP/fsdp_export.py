@@ -334,8 +334,17 @@ def load_checkpoint(checkpoint_dir: str, model: torch.nn.Module) -> None:
     if not ckpt_dir.exists():
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_dir}")
 
-    state = {"app": AppState(model, None)}
+    from torch.distributed.checkpoint.state_dict import get_model_state_dict, set_model_state_dict
+    
+    model_state = get_model_state_dict(model)
+    state = {"model": model_state}
+    
     dcp.load(state_dict=state, checkpoint_id=str(ckpt_dir))
+    
+    set_model_state_dict(
+        model,
+        model_state_dict=state["model"],
+    )
 
 
 def export_dtype_to_torch(dtype_name: str) -> torch.dtype:

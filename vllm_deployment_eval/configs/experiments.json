@@ -76,6 +76,32 @@
     }
   },
   {
+    "experiment_name": "fsdp-llama32-1b-finetuned-step6000",
+    "strategy": "FSDP",
+    "model_size": "1B",
+    "model_id": "ehdus9063/llama32-1b-finetuned-step6000",
+    "revision": "16b5c1aa82fccda53764ce316e5f170e760e20fb",
+    "tokenizer_revision": "16b5c1aa82fccda53764ce316e5f170e760e20fb",
+    "checkpoint_format": "huggingface",
+    "result_group": "FSDP",
+    "port": 8015,
+    "dtype": "bfloat16",
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.85,
+    "chat_template": "templates/llama3-chat-template.jinja",
+    "training_metrics": {
+      "tokens_per_second": null,
+      "wall_clock_time_to_fixed_validation_loss_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "validation_loss_target": null
+    },
+    "export_metrics": {
+      "conversion_time_seconds": null,
+      "peak_cpu_ram_mb": null,
+      "extra_scripts_required": "FSDP checkpoint exported to Hugging Face format before vLLM serving"
+    }
+  },
+  {
     "experiment_name": "zero2-llama32-1b-vllm-export",
     "strategy": "ZeRO-2",
     "model_size": "1B",

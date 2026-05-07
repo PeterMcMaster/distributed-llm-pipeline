@@ -1,0 +1,51 @@
+{
+  "run_id": "20260507T163932Z-zero2-3b-zero2-llama32-3b-vllm-export",
+  "started_at": "2026-05-07T16:39:32.877033+00:00",
+  "python": "3.11.2 (main, Apr 28 2025, 14:11:48) [GCC 12.2.0]",
+  "platform": "Linux-6.1.0-44-cloud-amd64-x86_64-with-glibc2.36",
+  "config": {
+    "experiment_name": "zero2-llama32-3b-vllm-export",
+    "strategy": "ZeRO-2",
+    "model_size": "3B",
+    "model_id": "robsol/hpml-final-3b-zero2-vllm-export",
+    "revision": "c53969be60e770ac81f67e305602a1344b532612",
+    "tokenizer_revision": "c53969be60e770ac81f67e305602a1344b532612",
+    "checkpoint_format": "huggingface",
+    "result_group": "ZeRO2",
+    "port": 8014,
+    "dtype": "bfloat16",
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.85,
+    "chat_template": "templates/llama3-chat-template.jinja",
+    "training_metrics": {
+      "tokens_per_second": null,
+      "wall_clock_time_to_fixed_validation_loss_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "validation_loss_target": null
+    },
+    "export_metrics": {
+      "conversion_time_seconds": null,
+      "peak_cpu_ram_mb": null,
+      "extra_scripts_required": "DeepSpeed ZeRO-2 checkpoint exported to Hugging Face format before vLLM serving"
+    }
+  },
+  "vllm_version": {
+    "args": [
+      "vllm",
+      "--version"
+    ],
+    "returncode": 0,
+    "duration_seconds": 9.4402,
+    "stdout": "0.20.1",
+    "stderr": ""
+  },
+  "nvidia_smi_before": {
+    "args": [
+      "nvidia-smi"
+    ],
+    "returncode": 0,
+    "duration_seconds": 0.2697,
+    "stdout": "Thu May  7 16:39:42 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.126.20             Driver Version: 580.126.20     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA L4                      Off |   00000000:00:03.0 Off |                    0 |\n| N/A   38C    P8             17W /   72W |       0MiB /  23034MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+",
+    "stderr": ""
+  }
+}

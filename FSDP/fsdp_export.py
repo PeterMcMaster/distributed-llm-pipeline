@@ -75,23 +75,26 @@ class AppState(Stateful):
         self.optimizer = optimizer
 
     def state_dict(self) -> Dict[str, Any]:
-        # Only include optimizer state if we have an optimizer
-        model_state, optim_state = get_state_dict(self.model, self.optimizer)
+        # get_state_dict requires either an optimizer or empty list, not None
+        optimizers = [self.optimizer] if self.optimizer is not None else []
+        model_state, optim_state = get_state_dict(self.model, optimizers)
+        
+        # Only include optim in result if we actually have an optimizer
         result = {"model": model_state}
         if self.optimizer is not None:
             result["optim"] = optim_state
         return result
 
     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
-        # Only load optimizer state if we have an optimizer
-        model_state = state_dict.get("model")
-        optim_state = state_dict.get("optim") if self.optimizer is not None else None
+        # Only pass optimizer state if we have an optimizer
+        optimizers = [self.optimizer] if self.optimizer is not None else []
+        optim_state_dict = state_dict.get("optim") if self.optimizer is not None else {}
         
         set_state_dict(
             self.model,
-            self.optimizer,
-            model_state_dict=model_state,
-            optim_state_dict=optim_state,
+            optimizers,
+            model_state_dict=state_dict["model"],
+            optim_state_dict=optim_state_dict,
         )
 
 

@@ -675,6 +675,9 @@ def main() -> None:
 
         # Keep the unwrapped model on CPU; FSDP handles placement during wrapping.
         model, tokenizer = load_model_and_tokenizer(cfg)
+        print("lm_head weight:", model.lm_head.weight.shape)
+        if model.lm_head.bias is not None:
+            print("lm_head bias:", model.lm_head.bias.shape)
         train_ds, _ = build_datasets(cfg, tokenizer)
 
         train_loader = build_dataloader(

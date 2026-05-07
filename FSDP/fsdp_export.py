@@ -75,15 +75,26 @@ class AppState(Stateful):
         self.optimizer = optimizer
 
     def state_dict(self) -> Dict[str, Any]:
-        model_state, optim_state = get_state_dict(self.model, self.optimizer)
-        return {"model": model_state, "optim": optim_state}
+        # get_state_dict requires either an optimizer or empty list, not None
+        optimizers = [self.optimizer] if self.optimizer is not None else []
+        model_state, optim_state = get_state_dict(self.model, optimizers)
+        
+        # Only include optim in result if we actually have an optimizer
+        result = {"model": model_state}
+        if self.optimizer is not None:
+            result["optim"] = optim_state
+        return result
 
     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
+        # Only pass optimizer state if we have an optimizer
+        optimizers = [self.optimizer] if self.optimizer is not None else []
+        optim_state_dict = state_dict.get("optim") if self.optimizer is not None else {}
+        
         set_state_dict(
             self.model,
-            self.optimizer,
+            optimizers,
             model_state_dict=state_dict["model"],
-            optim_state_dict=state_dict["optim"],
+            optim_state_dict=optim_state_dict,
         )
 
 
@@ -298,7 +309,8 @@ def build_auto_wrap_policy(cfg: Config, model: torch.nn.Module) -> Callable[...,
                 "Could not detect transformer block classes. "
                 "Switch to auto_wrap_policy='size_based' if needed."
             )
-        return lambda_auto_wrap_policy(lambda_fn=lambda m: isinstance(m, block_classes))
+        from functools import partial
+        return partial(lambda_auto_wrap_policy, lambda_fn=lambda m: isinstance(m, block_classes))
 
     if cfg.auto_wrap_policy == "size_based":
         from functools import partial
@@ -326,12 +338,12 @@ def wrap_fsdp(model: torch.nn.Module, cfg: Config, device: torch.device) -> FSDP
     )
 
 
-def load_checkpoint(checkpoint_dir: str, model: torch.nn.Module) -> None:
-    """Load sharded FSDP checkpoint."""
+def load_checkpoint(checkpoint_dir: str, model: FSDP) -> None:
+    """Load sharded FSDP checkpoint into FSDP-wrapped model."""
     ckpt_dir = Path(checkpoint_dir)
     if not ckpt_dir.exists():
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_dir}")
-
+    
     state = {"app": AppState(model, None)}
     dcp.load(state_dict=state, checkpoint_id=str(ckpt_dir))
 

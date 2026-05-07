@@ -26,7 +26,7 @@ Central outputs:
 ```text
 results/experiments.jsonl
 results/summary_metrics.csv
-results/<run_id>/
+results/<strategy>/<run_id>/
 ```
 
 Each run directory contains server logs, request/response JSONL, GPU samples,

@@ -440,7 +440,8 @@ def main() -> int:
     prompts = load_json(Path(args.prompts))
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     run_id = f"{utc_id()}-{config['strategy'].lower().replace('-', '')}-{config['model_size'].lower()}-{config['experiment_name']}"
-    run_dir = RESULTS_DIR / run_id
+    result_group = config.get("result_group") or config.get("strategy")
+    run_dir = RESULTS_DIR / str(result_group) / run_id if result_group else RESULTS_DIR / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
 
     base_url = f"http://127.0.0.1:{config['port']}/v1"

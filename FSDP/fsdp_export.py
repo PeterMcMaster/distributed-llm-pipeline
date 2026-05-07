@@ -328,23 +328,17 @@ def wrap_fsdp(model: torch.nn.Module, cfg: Config, device: torch.device) -> FSDP
     )
 
 
-def load_checkpoint(checkpoint_dir: str, model: torch.nn.Module) -> None:
-    """Load sharded FSDP checkpoint."""
+def load_checkpoint(checkpoint_dir: str, model: FSDP) -> None:
+    """Load sharded FSDP checkpoint into FSDP-wrapped model."""
     ckpt_dir = Path(checkpoint_dir)
     if not ckpt_dir.exists():
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_dir}")
 
-    from torch.distributed.checkpoint.state_dict import get_model_state_dict, set_model_state_dict
-    
-    model_state = get_model_state_dict(model)
-    state = {"model": model_state}
-    
-    dcp.load(state_dict=state, checkpoint_id=str(ckpt_dir))
-    
-    set_model_state_dict(
-        model,
-        model_state_dict=state["model"],
-    )
+    # Use FSDP's state_dict context to load in sharded format
+    with FSDP.state_dict_type(model, StateDictType.SHARDED_STATE_DICT):
+        state_dict = model.state_dict()
+        dcp.load(state_dict={"model": state_dict}, checkpoint_id=str(ckpt_dir))
+        model.load_state_dict(state_dict)
 
 
 def export_dtype_to_torch(dtype_name: str) -> torch.dtype:

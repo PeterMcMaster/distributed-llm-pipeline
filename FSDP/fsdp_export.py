@@ -298,7 +298,8 @@ def build_auto_wrap_policy(cfg: Config, model: torch.nn.Module) -> Callable[...,
                 "Could not detect transformer block classes. "
                 "Switch to auto_wrap_policy='size_based' if needed."
             )
-        return lambda_auto_wrap_policy(lambda_fn=lambda m: isinstance(m, block_classes))
+        from functools import partial
+        return partial(lambda_auto_wrap_policy, lambda_fn=lambda m: isinstance(m, block_classes))
 
     if cfg.auto_wrap_policy == "size_based":
         from functools import partial

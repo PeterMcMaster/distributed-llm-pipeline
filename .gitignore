@@ -1,4 +1,5 @@
 ddp_baseline_output/
+.DS_Store
 *.safetensors
 *.bin
 *.pt

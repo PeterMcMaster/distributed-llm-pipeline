@@ -1,26 +1,57 @@
-# vLLM Deployment Experiment
+# fsdp-llama32-3b-finetuned-final
 
-- run_id: `20260507T162741Z-fsdp-3b-fsdp-llama32-3b-finetuned-final`
-- experiment_name: `fsdp-llama32-3b-finetuned-final`
-- strategy: `FSDP`
-- model_size: `3B`
-- model_id: `ehdus9063/llama32-3b-finetuned-final`
-- checkpoint_format: `huggingface`
-- server_load_time_seconds: `124.0405`
-- avg_latency_seconds: `3.7019`
-- avg_first_token_latency_seconds: `0.0362`
-- avg_completion_tokens_per_second: `34.3225`
-- peak_gpu_memory_used_mb: `19114.0`
-- peak_gpu_utilization_pct: `100.0`
+## Run
 
-## Requests
+| Field | Value |
+| --- | --- |
+| Run ID | 20260507T162741Z-fsdp-3b-fsdp-llama32-3b-finetuned-final |
+| Strategy | FSDP |
+| Model size | 3B |
+| Model ID | ehdus9063/llama32-3b-finetuned-final |
+| Checkpoint format | huggingface |
+| Run directory | results/FSDP/20260507T162741Z-fsdp-3b-fsdp-llama32-3b-finetuned-final |
+
+## Serving Metrics
+
+| Metric | Value |
+| --- | --- |
+| Server load time (s) | 124.0405 |
+| Average request latency (s) | 3.7019 |
+| Average first token latency (s) | 0.0362 |
+| Average completion tokens/s | 34.3225 |
+| Peak GPU memory used (MB) | 19114 |
+| Peak GPU power (W) | 72.32 |
+| Peak GPU utilization (%) | 100 |
+
+## Training And Export Context
+
+| Metric | Value |
+| --- | --- |
+| Training tokens/s | - |
+| Training wall clock to target validation loss (s) | - |
+| Training peak GPU memory (MB) | - |
+| Export conversion time (s) | - |
+| Export peak CPU RAM (MB) | - |
+| Export notes | FSDP checkpoint exported to Hugging Face format before vLLM serving |
+
+## Request Results
+
+| Prompt | Latency (s) | First token (s) | Completion tokens/s | Total tokens | Finish reason |
+| --- | --- | --- | --- | --- | --- |
+| short_instruction | 3.3805 | 0.0369 | 28.3983 | 119 | length |
+| deployment_reasoning | 4.2949 | 0.036 | 37.2532 | 190 | length |
+| format_following | 3.4302 | 0.0358 | 37.3159 | 155 | length |
+
+## Response Samples
 
 ### short_instruction
 
-- latency_seconds: `3.3805`
-- first_token_latency_seconds: `0.0369`
-- completion_tokens_per_second: `28.3983`
-- usage: `{"prompt_tokens": 23, "total_tokens": 119, "completion_tokens": 96, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 3.3805 |
+| First token latency (s) | 0.0369 |
+| Completion tokens/s | 28.3983 |
+| Usage | {"completion_tokens": 96, "prompt_tokens": 23, "prompt_tokens_details": null, "total_tokens": 119} |
 
 ```text
 # 1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.
@@ -28,10 +59,12 @@
 
 ### deployment_reasoning
 
-- latency_seconds: `4.2949`
-- first_token_latency_seconds: `0.036`
-- completion_tokens_per_second: `37.2532`
-- usage: `{"prompt_tokens": 30, "total_tokens": 190, "completion_tokens": 160, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 4.2949 |
+| First token latency (s) | 0.036 |
+| Completion tokens/s | 37.2532 |
+| Usage | {"completion_tokens": 160, "prompt_tokens": 30, "prompt_tokens_details": null, "total_tokens": 190} |
 
 ```text
 ## Introduction
@@ -41,10 +74,12 @@ The LLMs (Large Language Models) are the most popular models in the NLP (Natural
 
 ### format_following
 
-- latency_seconds: `3.4302`
-- first_token_latency_seconds: `0.0358`
-- completion_tokens_per_second: `37.3159`
-- usage: `{"prompt_tokens": 27, "total_tokens": 155, "completion_tokens": 128, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 3.4302 |
+| First token latency (s) | 0.0358 |
+| Completion tokens/s | 37.3159 |
+| Usage | {"completion_tokens": 128, "prompt_tokens": 27, "prompt_tokens_details": null, "total_tokens": 155} |
 
 ```text
 Return valid JSON with keys strategy, deployment_status, and one_observation.]‏

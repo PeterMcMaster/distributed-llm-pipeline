@@ -1,16 +1,17 @@
 # vLLM Deployment Evaluation
 
-Centralized runner for comparing inference-serving behavior across fine-tuning
-strategies and model sizes.
+Centralized runner for comparing vLLM inference behavior across fine-tuning
+strategies and model sizes. Runs are grouped by training strategy and every run
+gets the same artifact layout.
 
-Run one configured experiment:
+## Run an experiment
 
 ```bash
-cd /home/petermcmaster/vllm-deployment-eval
+cd vllm_deployment_eval
 ./run_experiment.py --config configs/experiments.json --name ddp-llama32-1b-ultrachat
 ```
 
-Run an ad hoc model:
+Run an ad hoc model with explicit settings:
 
 ```bash
 ./run_experiment.py \
@@ -21,13 +22,36 @@ Run an ad hoc model:
   --chat-template templates/llama3-chat-template.jinja
 ```
 
-Central outputs:
+## Result layout
 
 ```text
 results/experiments.jsonl
 results/summary_metrics.csv
-results/<strategy>/<run_id>/
+results/<strategy>/
+  <run_id>/
+    gpu_samples.csv
+    metadata.json
+    metrics_before.txt
+    metrics_after.txt
+    requests.jsonl
+    run_record.json
+    server.log
+    summary.md
 ```
 
-Each run directory contains server logs, request/response JSONL, GPU samples,
-environment metadata, vLLM metrics, and a Markdown summary.
+`summary.md` is the human-readable report for a run. `run_record.json`,
+`requests.jsonl`, and `gpu_samples.csv` are the structured sources used to
+rebuild reports.
+
+## Reformat existing results
+
+After copying in artifacts or changing report formatting, rebuild the derived
+summary files:
+
+```bash
+./format_results.py
+```
+
+The formatter rewrites `summary.md`, `experiments.jsonl`, and
+`summary_metrics.csv`. It does not edit raw logs, request JSONL, GPU samples, or
+metrics dumps.

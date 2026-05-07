@@ -1,26 +1,57 @@
-# vLLM Deployment Experiment
+# zero2-llama32-3b-vllm-export
 
-- run_id: `20260507T163932Z-zero2-3b-zero2-llama32-3b-vllm-export`
-- experiment_name: `zero2-llama32-3b-vllm-export`
-- strategy: `ZeRO-2`
-- model_size: `3B`
-- model_id: `robsol/hpml-final-3b-zero2-vllm-export`
-- checkpoint_format: `huggingface`
-- server_load_time_seconds: `132.0552`
-- avg_latency_seconds: `3.6883`
-- avg_first_token_latency_seconds: `0.0367`
-- avg_completion_tokens_per_second: `34.4365`
-- peak_gpu_memory_used_mb: `19114.0`
-- peak_gpu_utilization_pct: `100.0`
+## Run
 
-## Requests
+| Field | Value |
+| --- | --- |
+| Run ID | 20260507T163932Z-zero2-3b-zero2-llama32-3b-vllm-export |
+| Strategy | ZeRO-2 |
+| Model size | 3B |
+| Model ID | robsol/hpml-final-3b-zero2-vllm-export |
+| Checkpoint format | huggingface |
+| Run directory | results/ZeRO2/20260507T163932Z-zero2-3b-zero2-llama32-3b-vllm-export |
+
+## Serving Metrics
+
+| Metric | Value |
+| --- | --- |
+| Server load time (s) | 132.0552 |
+| Average request latency (s) | 3.6883 |
+| Average first token latency (s) | 0.0367 |
+| Average completion tokens/s | 34.4365 |
+| Peak GPU memory used (MB) | 19114 |
+| Peak GPU power (W) | 72.68 |
+| Peak GPU utilization (%) | 100 |
+
+## Training And Export Context
+
+| Metric | Value |
+| --- | --- |
+| Training tokens/s | - |
+| Training wall clock to target validation loss (s) | - |
+| Training peak GPU memory (MB) | - |
+| Export conversion time (s) | - |
+| Export peak CPU RAM (MB) | - |
+| Export notes | DeepSpeed ZeRO-2 checkpoint exported to Hugging Face format before vLLM serving |
+
+## Request Results
+
+| Prompt | Latency (s) | First token (s) | Completion tokens/s | Total tokens | Finish reason |
+| --- | --- | --- | --- | --- | --- |
+| short_instruction | 3.3375 | 0.0364 | 28.764 | 119 | length |
+| deployment_reasoning | 4.2953 | 0.0368 | 37.2497 | 190 | length |
+| format_following | 3.432 | 0.0368 | 37.2959 | 155 | length |
+
+## Response Samples
 
 ### short_instruction
 
-- latency_seconds: `3.3375`
-- first_token_latency_seconds: `0.0364`
-- completion_tokens_per_second: `28.764`
-- usage: `{"prompt_tokens": 23, "total_tokens": 119, "completion_tokens": 96, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 3.3375 |
+| First token latency (s) | 0.0364 |
+| Completion tokens/s | 28.764 |
+| Usage | {"completion_tokens": 96, "prompt_tokens": 23, "prompt_tokens_details": null, "total_tokens": 119} |
 
 ```text
 Distributed fine-tuning is a technique used in machine learning to improve the performance of a model by training it on a large dataset. The model is first trained on a large dataset, and then fine-tuned on a smaller dataset. The fine-tuning process involves adjusting the model's parameters to better fit the new dataset. This technique is commonly used in natural language processing and computer vision applications. The model is trained on a large dataset, and then fine-tuned on a smaller
@@ -28,10 +59,12 @@ Distributed fine-tuning is a technique used in machine learning to improve the p
 
 ### deployment_reasoning
 
-- latency_seconds: `4.2953`
-- first_token_latency_seconds: `0.0368`
-- completion_tokens_per_second: `37.2497`
-- usage: `{"prompt_tokens": 30, "total_tokens": 190, "completion_tokens": 160, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 4.2953 |
+| First token latency (s) | 0.0368 |
+| Completion tokens/s | 37.2497 |
+| Usage | {"completion_tokens": 160, "prompt_tokens": 30, "prompt_tokens_details": null, "total_tokens": 190} |
 
 ```text
 1. Security: As with any AI model, security is a major concern when deploying a fine-tuned LLM. This includes protecting the model from unauthorized access, preventing data breaches, and ensuring that the model is not used for malicious purposes. Additionally, the model must be properly trained and validated to ensure that it is accurate and reliable.
@@ -43,10 +76,12 @@ Distributed fine-tuning is a technique used in machine learning to improve the p
 
 ### format_following
 
-- latency_seconds: `3.432`
-- first_token_latency_seconds: `0.0368`
-- completion_tokens_per_second: `37.2959`
-- usage: `{"prompt_tokens": 27, "total_tokens": 155, "completion_tokens": 128, "prompt_tokens_details": null}`
+| Metric | Value |
+| --- | --- |
+| Latency (s) | 3.432 |
+| First token latency (s) | 0.0368 |
+| Completion tokens/s | 37.2959 |
+| Usage | {"completion_tokens": 128, "prompt_tokens": 27, "prompt_tokens_details": null, "total_tokens": 155} |
 
 ```text
 Return valid JSON with keys strategy, deployment_status, and one_observation..…

@@ -18,6 +18,33 @@ ROOT = Path(__file__).resolve().parent
 RESULTS_DIR = ROOT / "results"
 DEFAULT_PROMPTS = ROOT / "configs" / "prompts.json"
 API_KEY = "devkey"
+STRATEGY_RESULT_GROUPS = {
+    "DDP": "DDP",
+    "FSDP": "FSDP",
+    "ZeRO-2": "ZeRO2",
+}
+SUMMARY_FIELDS = [
+    "run_id",
+    "experiment_name",
+    "strategy",
+    "model_size",
+    "model_id",
+    "checkpoint_format",
+    "server_load_time_seconds",
+    "avg_latency_seconds",
+    "avg_first_token_latency_seconds",
+    "avg_completion_tokens_per_second",
+    "peak_gpu_memory_used_mb",
+    "peak_power_w",
+    "peak_gpu_utilization_pct",
+    "training_tokens_per_second",
+    "training_wall_clock_time_to_fixed_validation_loss_seconds",
+    "training_peak_gpu_memory_mb",
+    "export_conversion_time_seconds",
+    "export_peak_cpu_ram_mb",
+    "export_extra_scripts_required",
+    "run_dir",
+]
 
 
 def utc_id() -> str:
@@ -195,6 +222,36 @@ def read_gpu_peak(path: Path) -> dict:
     }
 
 
+def result_group_for(config: dict) -> str:
+    strategy = config.get("strategy", "")
+    return str(config.get("result_group") or STRATEGY_RESULT_GROUPS.get(strategy, strategy))
+
+
+def relative_run_dir(run_dir: Path) -> str:
+    try:
+        return str(run_dir.relative_to(ROOT))
+    except ValueError:
+        return str(run_dir)
+
+
+def format_cell(value) -> str:
+    if value is None or value == "":
+        return "-"
+    if isinstance(value, float):
+        return f"{value:.4f}".rstrip("0").rstrip(".")
+    return str(value)
+
+
+def markdown_table(headers: list[str], rows: list[list[object]]) -> str:
+    lines = [
+        "| " + " | ".join(headers) + " |",
+        "| " + " | ".join("---" for _ in headers) + " |",
+    ]
+    for row in rows:
+        lines.append("| " + " | ".join(format_cell(value).replace("\n", " ") for value in row) + " |")
+    return "\n".join(lines)
+
+
 def start_server(config: dict, run_dir: Path) -> tuple[subprocess.Popen, Path]:
     server_log_path = run_dir / "server.log"
     server_log = server_log_path.open("w", encoding="utf-8")
@@ -327,29 +384,92 @@ def measure_first_token(base_url: str, model_id: str, prompt: dict) -> dict:
 def write_summary(run_dir: Path, run_record: dict, request_results: list[dict]) -> None:
     summary = run_dir / "summary.md"
     with summary.open("w", encoding="utf-8") as f:
-        f.write("# vLLM Deployment Experiment\n\n")
-        for key in [
-            "run_id",
-            "experiment_name",
-            "strategy",
-            "model_size",
-            "model_id",
-            "checkpoint_format",
-            "server_load_time_seconds",
-            "avg_latency_seconds",
-            "avg_first_token_latency_seconds",
-            "avg_completion_tokens_per_second",
-            "peak_gpu_memory_used_mb",
-            "peak_gpu_utilization_pct",
-        ]:
-            f.write(f"- {key}: `{run_record.get(key)}`\n")
-        f.write("\n## Requests\n\n")
+        f.write(f"# {run_record.get('experiment_name', 'vLLM Deployment Experiment')}\n\n")
+        f.write("## Run\n\n")
+        f.write(
+            markdown_table(
+                ["Field", "Value"],
+                [
+                    ["Run ID", run_record.get("run_id")],
+                    ["Strategy", run_record.get("strategy")],
+                    ["Model size", run_record.get("model_size")],
+                    ["Model ID", run_record.get("model_id")],
+                    ["Checkpoint format", run_record.get("checkpoint_format")],
+                    ["Run directory", run_record.get("run_dir")],
+                ],
+            )
+        )
+        f.write("\n\n## Serving Metrics\n\n")
+        f.write(
+            markdown_table(
+                ["Metric", "Value"],
+                [
+                    ["Server load time (s)", run_record.get("server_load_time_seconds")],
+                    ["Average request latency (s)", run_record.get("avg_latency_seconds")],
+                    ["Average first token latency (s)", run_record.get("avg_first_token_latency_seconds")],
+                    ["Average completion tokens/s", run_record.get("avg_completion_tokens_per_second")],
+                    ["Peak GPU memory used (MB)", run_record.get("peak_gpu_memory_used_mb")],
+                    ["Peak GPU power (W)", run_record.get("peak_power_w")],
+                    ["Peak GPU utilization (%)", run_record.get("peak_gpu_utilization_pct")],
+                ],
+            )
+        )
+        f.write("\n\n## Training And Export Context\n\n")
+        f.write(
+            markdown_table(
+                ["Metric", "Value"],
+                [
+                    ["Training tokens/s", run_record.get("training_tokens_per_second")],
+                    [
+                        "Training wall clock to target validation loss (s)",
+                        run_record.get("training_wall_clock_time_to_fixed_validation_loss_seconds"),
+                    ],
+                    ["Training peak GPU memory (MB)", run_record.get("training_peak_gpu_memory_mb")],
+                    ["Export conversion time (s)", run_record.get("export_conversion_time_seconds")],
+                    ["Export peak CPU RAM (MB)", run_record.get("export_peak_cpu_ram_mb")],
+                    ["Export notes", run_record.get("export_extra_scripts_required")],
+                ],
+            )
+        )
+        f.write("\n\n## Request Results\n\n")
+        f.write(
+            markdown_table(
+                [
+                    "Prompt",
+                    "Latency (s)",
+                    "First token (s)",
+                    "Completion tokens/s",
+                    "Total tokens",
+                    "Finish reason",
+                ],
+                [
+                    [
+                        result.get("prompt_name"),
+                        result.get("latency_seconds"),
+                        result.get("first_token_latency_seconds"),
+                        result.get("completion_tokens_per_second"),
+                        result.get("usage", {}).get("total_tokens"),
+                        result.get("finish_reason"),
+                    ]
+                    for result in request_results
+                ],
+            )
+        )
+        f.write("\n\n## Response Samples\n\n")
         for result in request_results:
             f.write(f"### {result['prompt_name']}\n\n")
-            f.write(f"- latency_seconds: `{result.get('latency_seconds')}`\n")
-            f.write(f"- first_token_latency_seconds: `{result.get('first_token_latency_seconds')}`\n")
-            f.write(f"- completion_tokens_per_second: `{result.get('completion_tokens_per_second')}`\n")
-            f.write(f"- usage: `{json.dumps(result.get('usage', {}))}`\n\n")
+            f.write(
+                markdown_table(
+                    ["Metric", "Value"],
+                    [
+                        ["Latency (s)", result.get("latency_seconds")],
+                        ["First token latency (s)", result.get("first_token_latency_seconds")],
+                        ["Completion tokens/s", result.get("completion_tokens_per_second")],
+                        ["Usage", json.dumps(result.get("usage", {}), sort_keys=True)],
+                    ],
+                )
+            )
+            f.write("\n\n")
             f.write("```text\n")
             f.write(result.get("content", "").strip() + "\n")
             f.write("```\n\n")
@@ -357,7 +477,7 @@ def write_summary(run_dir: Path, run_record: dict, request_results: list[dict]) 
 
 def append_jsonl(path: Path, record: dict) -> None:
     with path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        f.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def rewrite_summary_csv(path: Path, jsonl_path: Path) -> None:
@@ -365,31 +485,11 @@ def rewrite_summary_csv(path: Path, jsonl_path: Path) -> None:
     if jsonl_path.exists():
         with jsonl_path.open(encoding="utf-8") as f:
             rows = [json.loads(line) for line in f if line.strip()]
-    fields = [
-        "run_id",
-        "experiment_name",
-        "strategy",
-        "model_size",
-        "model_id",
-        "checkpoint_format",
-        "server_load_time_seconds",
-        "avg_latency_seconds",
-        "avg_first_token_latency_seconds",
-        "avg_completion_tokens_per_second",
-        "peak_gpu_memory_used_mb",
-        "peak_gpu_utilization_pct",
-        "training_tokens_per_second",
-        "training_wall_clock_time_to_fixed_validation_loss_seconds",
-        "training_peak_gpu_memory_mb",
-        "export_conversion_time_seconds",
-        "export_peak_cpu_ram_mb",
-        "export_extra_scripts_required",
-        "run_dir",
-    ]
+    fields = SUMMARY_FIELDS
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
-        for row in rows:
+        for row in sorted(rows, key=lambda item: item.get("run_id", "")):
             writer.writerow({field: row.get(field) for field in fields})
 
 
@@ -440,7 +540,7 @@ def main() -> int:
     prompts = load_json(Path(args.prompts))
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     run_id = f"{utc_id()}-{config['strategy'].lower().replace('-', '')}-{config['model_size'].lower()}-{config['experiment_name']}"
-    result_group = config.get("result_group") or config.get("strategy")
+    result_group = result_group_for(config)
     run_dir = RESULTS_DIR / str(result_group) / run_id if result_group else RESULTS_DIR / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
 
@@ -512,7 +612,7 @@ def main() -> int:
         "avg_completion_tokens_per_second": round(sum(completion_tps) / len(completion_tps), 4)
         if completion_tps
         else None,
-        "run_dir": str(run_dir),
+        "run_dir": relative_run_dir(run_dir),
         "training_tokens_per_second": training.get("tokens_per_second"),
         "training_wall_clock_time_to_fixed_validation_loss_seconds": training.get(
             "wall_clock_time_to_fixed_validation_loss_seconds"

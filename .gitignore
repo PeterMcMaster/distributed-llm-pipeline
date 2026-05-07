@@ -6,3 +6,11 @@ ddp_baseline_output/
 .cache/
 __pycache__/
 *.pyc
+DDP/output*/
+DDP/logs/
+DDP/wandb/
+DDP/.hf_cache/
+*.safetensors
+*.bin
+*.pt
+llm-env/

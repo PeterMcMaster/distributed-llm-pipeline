@@ -1,0 +1,52 @@
+[
+  {
+    "experiment_name": "ddp-llama32-1b-ultrachat",
+    "strategy": "DDP",
+    "model_size": "1B",
+    "model_id": "Sudarshan1607/ddp-llama32-1b-ultrachat",
+    "revision": "593e79d2b9a1342cc675ad80e0c526963fa76a66",
+    "tokenizer_revision": "593e79d2b9a1342cc675ad80e0c526963fa76a66",
+    "checkpoint_format": "huggingface",
+    "port": 8010,
+    "dtype": "bfloat16",
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.85,
+    "chat_template": "/home/petermcmaster/vllm-deployment-eval/templates/llama3-chat-template.jinja",
+    "training_metrics": {
+      "tokens_per_second": null,
+      "wall_clock_time_to_fixed_validation_loss_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "validation_loss_target": null
+    },
+    "export_metrics": {
+      "conversion_time_seconds": null,
+      "peak_cpu_ram_mb": null,
+      "extra_scripts_required": "none; checkpoint is already in Hugging Face format"
+    }
+  },
+  {
+    "experiment_name": "ddp-llama32-3b-ultrachat",
+    "strategy": "DDP",
+    "model_size": "3B",
+    "model_id": "Sudarshan1607/ddp-llama32-3b-ultrachat",
+    "revision": "148a99dc0af68945c6a57dd99c7d59928628d318",
+    "tokenizer_revision": "148a99dc0af68945c6a57dd99c7d59928628d318",
+    "checkpoint_format": "huggingface",
+    "port": 8011,
+    "dtype": "bfloat16",
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.85,
+    "chat_template": "/home/petermcmaster/vllm-deployment-eval/templates/llama3-chat-template.jinja",
+    "training_metrics": {
+      "tokens_per_second": null,
+      "wall_clock_time_to_fixed_validation_loss_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "validation_loss_target": null
+    },
+    "export_metrics": {
+      "conversion_time_seconds": null,
+      "peak_cpu_ram_mb": null,
+      "extra_scripts_required": "none; checkpoint is already in Hugging Face format"
+    }
+  }
+]

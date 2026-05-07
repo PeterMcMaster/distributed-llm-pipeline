@@ -1,0 +1,35 @@
+[
+  {
+    "name": "short_instruction",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain distributed fine-tuning in one concise paragraph."
+      }
+    ],
+    "max_tokens": 96,
+    "temperature": 0.0
+  },
+  {
+    "name": "deployment_reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "List three practical deployment concerns when serving a fine-tuned LLM with vLLM."
+      }
+    ],
+    "max_tokens": 160,
+    "temperature": 0.2
+  },
+  {
+    "name": "format_following",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return valid JSON with keys strategy, deployment_status, and one_observation."
+      }
+    ],
+    "max_tokens": 128,
+    "temperature": 0.0
+  }
+]

@@ -74,6 +74,28 @@ curl http://localhost:8000/v1/chat/completions \
 
 The serving side of the project measures more than just basic latency. We evaluate model load time, request latency, throughput under load, and qualitative response behavior on a fixed prompt set. These results are later paired with training-side metrics such as throughput, memory usage, and checkpoint export overhead to compare end-to-end tradeoffs across DDP, ZeRO-2, and FSDP.
 
+## vLLM Deployment Evaluation Harness
+
+The repeatable vLLM inference experiments live in `vllm_deployment_eval/`. The
+runner starts vLLM for a configured checkpoint, records startup/load time,
+first-token latency, full-response latency, completion throughput, GPU samples,
+server logs, request/response JSONL, and aggregate comparison rows.
+
+Run a configured experiment:
+
+```bash
+cd vllm_deployment_eval
+./run_experiment.py --config configs/experiments.json --name ddp-llama32-1b-ultrachat
+./run_experiment.py --config configs/experiments.json --name ddp-llama32-3b-ultrachat
+```
+
+Central comparison outputs are stored in:
+
+```text
+vllm_deployment_eval/results/summary_metrics.csv
+vllm_deployment_eval/results/experiments.jsonl
+```
+
 ## Repository Goals
 
 - Serve baseline and fine-tuned Llama 3.2 checkpoints with vLLM

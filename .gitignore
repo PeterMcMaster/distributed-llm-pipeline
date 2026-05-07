@@ -3,3 +3,5 @@ ddp_baseline_output/
 *.bin
 *.pt
 .cache/
+__pycache__/
+*.pyc

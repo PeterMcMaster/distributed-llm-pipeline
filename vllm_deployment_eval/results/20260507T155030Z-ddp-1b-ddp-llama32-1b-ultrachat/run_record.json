@@ -1,0 +1,22 @@
+{
+  "run_id": "20260507T155030Z-ddp-1b-ddp-llama32-1b-ultrachat",
+  "experiment_name": "ddp-llama32-1b-ultrachat",
+  "strategy": "DDP",
+  "model_size": "1B",
+  "model_id": "Sudarshan1607/ddp-llama32-1b-ultrachat",
+  "checkpoint_format": "huggingface",
+  "server_load_time_seconds": 62.0226,
+  "avg_latency_seconds": 1.6272,
+  "avg_first_token_latency_seconds": 0.0209,
+  "avg_completion_tokens_per_second": 80.6349,
+  "run_dir": "/home/petermcmaster/vllm-deployment-eval/results/20260507T155030Z-ddp-1b-ddp-llama32-1b-ultrachat",
+  "training_tokens_per_second": null,
+  "training_wall_clock_time_to_fixed_validation_loss_seconds": null,
+  "training_peak_gpu_memory_mb": null,
+  "export_conversion_time_seconds": null,
+  "export_peak_cpu_ram_mb": null,
+  "export_extra_scripts_required": "none; checkpoint is already in Hugging Face format",
+  "peak_gpu_memory_used_mb": 19482.0,
+  "peak_power_w": 72.59,
+  "peak_gpu_utilization_pct": 100.0
+}

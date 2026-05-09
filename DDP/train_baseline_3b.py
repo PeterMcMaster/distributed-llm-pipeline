@@ -13,9 +13,9 @@ from transformers import (
     DataCollatorForLanguageModeling,
 )
 
-MODEL_NAME = "meta-llama/Llama-3.2-1B"
+MODEL_NAME = "meta-llama/Llama-3.2-3B"
 DATASET_NAME = "HuggingFaceH4/ultrachat_200k"
-OUTPUT_DIR = "./output_llama32_1b_2gpu_full_epoch"
+OUTPUT_DIR = "./output_llama32_3b_4gpu"
 
 MAX_LENGTH = 512
 TRAIN_SAMPLES = None
@@ -47,8 +47,7 @@ def format_ultrachat(example):
         elif role == "assistant":
             parts.append(f"### Assistant:\n{content}")
 
-    text = "\n\n".join(parts).strip()
-    return {"text": text}
+    return {"text": "\n\n".join(parts).strip()}
 
 
 def get_dir_size_gb(path):
@@ -94,8 +93,6 @@ def main():
     train_raw = dataset["train_sft"].shuffle(seed=SEED)
     val_raw = dataset["test_sft"].shuffle(seed=SEED)
 
-
-
     if TRAIN_SAMPLES is None:
         train_dataset = train_raw.map(format_ultrachat)
     else:
@@ -111,19 +108,16 @@ def main():
             padding=False,
         )
 
-    remove_cols_train = train_dataset.column_names
-    remove_cols_val = val_dataset.column_names
-
     train_dataset = train_dataset.map(
         tokenize_batch,
         batched=True,
-        remove_columns=remove_cols_train,
+        remove_columns=train_dataset.column_names,
     )
 
     val_dataset = val_dataset.map(
         tokenize_batch,
         batched=True,
-        remove_columns=remove_cols_val,
+        remove_columns=val_dataset.column_names,
     )
 
     if main_process:
@@ -159,14 +153,13 @@ def main():
         eval_strategy="no",
         eval_steps=100,
         save_strategy="no",
-        save_steps=None,
-        save_total_limit=2,
+        save_total_limit=None,
         bf16=True,
         fp16=False,
         report_to="wandb",
         run_name=os.environ.get(
             "WANDB_RUN_NAME",
-            f"ddp-llama32-1b-ultrachat-{world_size}gpu",
+            f"ddp-llama32-3b-ultrachat-{world_size}gpu",
         ),
         dataloader_num_workers=2,
         seed=SEED,
@@ -179,7 +172,7 @@ def main():
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=data_collator,
     )
 

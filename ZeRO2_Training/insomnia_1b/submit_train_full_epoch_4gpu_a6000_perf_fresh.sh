@@ -40,10 +40,8 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 
-# Performance-oriented NCCL settings for a single-node 4x A6000 run.
-# The stable fallback wrappers disable P2P to avoid transport issues on some
-# nodes. This wrapper does the opposite on purpose so same-node GPU-to-GPU
-# communication can use faster direct paths when the node topology supports it.
+#NCCL settings for a single-node 4x A6000 run
+
 NCCL_P2P_DISABLE="${NCCL_P2P_DISABLE:-0}"
 NCCL_P2P_LEVEL="${NCCL_P2P_LEVEL:-SYS}"
 NCCL_IB_DISABLE="${NCCL_IB_DISABLE:-1}"

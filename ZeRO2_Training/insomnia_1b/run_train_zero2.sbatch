@@ -89,8 +89,7 @@ fi
 
 cd "$ROOT_DIR"
 
-# Leave the module environment alone. This job now uses a pinned local torch
-# wheel, so changing module state here can introduce avoidable library drift.
+
 
 nvidia-smi
 

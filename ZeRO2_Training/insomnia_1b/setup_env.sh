@@ -33,8 +33,6 @@ else
   python -c "import torch; print('[setup] local torch', torch.__version__)"
 fi
 
-# Install the non-torch dependencies before importing deepspeed. Some of
-# DeepSpeed's modules import cpuinfo/numpy immediately at import time.
 python -m pip install --no-cache-dir -r "$ROOT_DIR/requirements.txt"
 
 if python -c "from importlib.metadata import version; import sys; sys.exit(0 if version('deepspeed') == '0.16.9' else 1)" >/dev/null 2>&1; then

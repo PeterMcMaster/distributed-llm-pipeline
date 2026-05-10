@@ -19,7 +19,7 @@
 
 - **GitHub repository:** [https://github.com/PeterMcMaster/distributed-llm-pipeline](https://github.com/PeterMcMaster/distributed-llm-pipeline)
 - **Final report:**
-    [`deliverables/HPML_Final_Report.pdf`](deliverables/HPML_Final_Report.pdf)
+    [`deliverables/Group25_HPML_Final_Report.pdf`](deliverables/Group25_HPML_Final_Report.pdf)
 - **Final presentation:** [`deliverables/HPML Final Project Presentation.pdf`](deliverables/HPML%20Final%20Project%20Presentation.pdf)
 - **Experiment-tracking dashboards:**
   - [DDP WandB](https://wandb.ai/sk5573-columbia-university/distributed-llm-pipeline?nw=nwusersk5573)
